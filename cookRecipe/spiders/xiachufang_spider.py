@@ -18,18 +18,24 @@ class xiachufang(scrapy.Spider): #定义一个爬虫类，继承自scrapy.Spider
 
     def parseRecipe(self,response):
         item = CookrecipeItem()
-        item['name'] = response.css('page-title::text').extract_first()
+        item['name'] = response.css('.page-title::text').extract_first()
         self.writeFile('name.txt',item['name'])
-        item['image'] = response.css('.cover.image.expandable.block-negative-margin::attr(scr)').extract_first()
-        self.writeFile('image.txt',item['name'])
+        item['image'] = response.css('.cover.image.expandable.block-negative-margin img::attr(src)').extract_first()
+        self.writeFile('image.txt',item['image'])
         materials = []
-        for tr in response.css('.ings tr'):
-            materials.append('name:' + tr.css('.name').extract_first() + 'unit:' + tr.css('.unit').extract_first())
-        item['materials'] = json.dumps(materials)
-        self.writeFile('materials.txt',item['materials'])
-        steps = ''
+        table = response.css('.ings').find_all('tr')
+        print(json.dumps(table))
+        # for tr in response.css('.ings tr'):
+        #     materials.append('name:' + tr.css('.name::text').extract_first() + 'unit:' + tr.css('.unit::text').extract_first())
+        # item['materials'] = json.dumps(materials)
+        # self.writeFile('materials.txt',item['materials'])
+        steps = []
         for step in response.css('.steps li'):
-            steps.append('step:' + step.css('.text::text').extract_first() + 'image:'+ step.css('image::attr(src)').extract_first())
+            step = step.css('.text::text').extract_first()
+            image = step.css('img::attr(src)').extract_first()
+            if image is None:
+                iamge = ''
+            steps.append('step:' + step + 'image:'+ image )
         item['steps'] = json.dumps(steps)
         self.writeFile('steps.txt',item['steps'])
         self.writeFile('test.txt',item['name'] + '---' + item['image'] + '---' + item['materials'] + '---' + item['steps'] + '\r\n')
