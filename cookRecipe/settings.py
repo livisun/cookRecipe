@@ -65,9 +65,9 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'cookRecipe.pipelines.CookrecipePipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'cookRecipe.pipelines.CookrecipePipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -89,3 +89,11 @@ DEFAULT_REQUEST_HEADERS = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# mongodb
+HOST = "127.0.0.1"  # 服务器地址
+PORT = 27017  # mongo默认端口号
+USER = ""
+PWD = ""
+DB = "xiachufang"
+TABLE = "caipu"
